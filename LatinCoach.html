@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LatinCoach - GCSE Latin Revision</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{--bg:#faf7f0;--bg2:#f0e9d8;--text:#1a1a1a;--text2:#4a4a4a;--gold:#c9a84c;--gold2:#a88832;--red:#8b1a1a;--red2:#a52a2a;--card:#fff;--card2:#f5f0e0;--border:#d4c9a8;--nav:#1a1a1a;--navtext:#e8d5a3;--modal:#fff;--input:#fff;--inputborder:#c9a84c;--shadow:rgba(0,0,0,.12);--accent:#2d1810}
+html.dark{--bg:#1a1510;--bg2:#241e14;--text:#e8d5a3;--text2:#b8a882;--gold:#c9a84c;--gold2:#e8c55a;--red:#c44040;--red2:#e05050;--card:#2a2318;--card2:#332a1c;--border:#4a3f2a;--nav:#0f0c08;--navtext:#e8d5a3;--modal:#2a2318;--input:#332a1c;--inputborder:#6a5a3a;--shadow:rgba(0,0,0,.4);--accent:#c9a84c}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s}
+.bg-roman{background:var(--bg)}.bg-roman2{background:var(--bg2)}.text-roman{color:var(--text)}.text-roman2{color:var(--text2)}
+.bg-card{background:var(--card)}.bg-card2{background:var(--card2)}.border-roman{border-color:var(--border)}
+.bg-nav{background:var(--nav)}.text-nav{color:var(--navtext)}.bg-modal{background:var(--modal)}
+.bg-input{background:var(--input)}.border-input{border-color:var(--inputborder)}
+.text-gold{color:var(--gold)}.text-gold2{color:var(--gold2)}.text-red{color:var(--red)}
+.bg-gold{background:var(--gold)}.bg-red{background:var(--red)}
+.btn-gold{background:var(--gold);color:#1a1a1a;padding:.5rem 1.25rem;border-radius:.375rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:system-ui,-apple-system,Arial,sans-serif}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-red{background:var(--red);color:#fff;padding:.5rem 1.25rem;border-radius:.375rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:system-ui,-apple-system,Arial,sans-serif}
+.btn-red:hover{background:var(--red2);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--gold);border:2px solid var(--gold);padding:.45rem 1.15rem;border-radius:.375rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:system-ui,-apple-system,Arial,sans-serif}
+.btn-outline:hover{background:var(--gold);color:#1a1a1a}
+input[type=text],input[type=password]{background:var(--input);color:var(--text);border:2px solid var(--inputborder);padding:.5rem .75rem;border-radius:.375rem;font-family:system-ui,-apple-system,Arial,sans-serif;font-size:1rem;width:100%;transition:border-color .2s}
+input:focus{outline:none;border-color:var(--gold2);box-shadow:0 0 0 3px rgba(201,168,76,.2)}
+.section{display:none}.section.active{display:block}
+.nav-link{cursor:pointer;padding:.5rem 1rem;transition:color .2s;color:var(--navtext)}.nav-link:hover{color:var(--gold)}
+.nav-link.active-link{color:var(--gold);border-bottom:2px solid var(--gold)}
+.flashcard{perspective:1000px;cursor:pointer;width:100%;max-width:600px;min-height:220px;margin:0 auto}
+.flashcard-inner{position:relative;width:100%;height:100%;min-height:220px;transition:transform .6s;transform-style:preserve-3d}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
+.flashcard-front,.flashcard-back{position:absolute;width:100%;min-height:220px;backface-visibility:hidden;border-radius:.75rem;display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center;border:2px solid var(--border);box-shadow:0 4px 12px var(--shadow)}
+.flashcard-front{background:var(--card);color:var(--text)}
+.flashcard-back{background:var(--card2);color:var(--text);transform:rotateY(180deg)}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:100;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.show{display:flex}
+.modal-content{background:var(--modal);border-radius:.75rem;max-width:900px;width:100%;max-height:90vh;overflow-y:auto;padding:2rem;position:relative;border:2px solid var(--border)}
+.hamburger{display:none;flex-direction:column;cursor:pointer;gap:5px}.hamburger span{width:24px;height:2px;background:var(--navtext);transition:all .3s}
+@media(max-width:768px){.hamburger{display:flex}.nav-links{display:none;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--nav);padding:1rem;border-top:1px solid var(--border);z-index:50}.nav-links.open{display:flex}}
+.confetti-piece{position:fixed;width:10px;height:10px;z-index:9999;pointer-events:none;animation:confettiFall 3s ease-out forwards}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0deg)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+.highlight-vocab{border-bottom:1px dashed var(--gold);cursor:help}
+.star-btn{cursor:pointer;font-size:1.25rem;transition:color .2s}.star-btn:hover{color:var(--gold)}
+.tab-btn{padding:.4rem 1rem;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;font-family:inherit;transition:all .2s;border-radius:.25rem}
+.tab-btn.active-tab{background:var(--gold);color:#1a1a1a;border-color:var(--gold)}
+.help-fab{position:fixed;bottom:1.5rem;right:1.5rem;width:50px;height:50px;border-radius:50%;background:var(--gold);color:#1a1a1a;font-size:1.5rem;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:90;box-shadow:0 4px 12px var(--shadow);transition:transform .2s;border:none}
+.help-fab:hover{transform:scale(1.1)}
+.wip-banner{background:linear-gradient(135deg,var(--red),#5a1010);color:#ffd700;padding:2rem;text-align:center;border-radius:.75rem;font-size:1.25rem;font-weight:700;border:2px solid #ffd700}
+.streak-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--card2);padding:.5rem 1rem;border-radius:2rem;border:1px solid var(--border)}
+.score-bar{height:8px;border-radius:4px;background:var(--border);overflow:hidden}.score-bar-fill{height:100%;border-radius:4px;background:var(--gold);transition:width .5s}
+table{width:100%;border-collapse:collapse}th,td{padding:.5rem;border:1px solid var(--border);text-align:center;font-size:.9rem}th{background:var(--card2);font-weight:700}
+</style>
+</head>
+<body class="bg-roman text-roman">
+
+<!-- NAVBAR -->
+<nav class="bg-nav text-nav sticky top-0 z-50 shadow-lg" id="navbar" style="display:none">
+<div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-14">
+<div class="text-xl font-bold tracking-wide" style="color:var(--gold)">LatinCoach</div>
+<div class="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></div>
+<div class="nav-links flex items-center gap-1" id="navLinks">
+<span class="nav-link active-link" onclick="showSection('home')">Home</span>
+<span class="nav-link" onclick="showSection('ocr')">OCR GCSE</span>
+<span class="nav-link" onclick="showSection('progress')">Progress</span>
+<span class="nav-link" onclick="showSection('about')">About</span>
+<span class="nav-link" onclick="toggleDark()" title="Toggle dark mode" style="font-size:1.1rem">&#9790;</span>
+<span class="nav-link text-red" onclick="doLogout()" style="color:var(--red)">Logout</span>
+</div>
+</div>
+</nav>
+
+<!-- LOGIN SECTION -->
+<div class="section active" id="sec-login">
+<div class="min-h-screen flex items-center justify-center px-4" style="background:linear-gradient(135deg,#1a1510 0%,#2d1810 50%,#1a1510 100%)">
+<div class="bg-card rounded-xl p-8 w-full max-w-md shadow-2xl" style="border:2px solid var(--gold)">
+<h1 class="text-3xl font-bold text-center mb-2" style="color:var(--gold)">LatinCoach</h1>
+<p class="text-center text-roman2 mb-6">Master Latin for GCSE</p>
+<form id="loginForm" onsubmit="event.preventDefault();doLogin()">
+<div class="mb-3">
+<label class="block text-sm font-semibold mb-1">GitHub Personal Access Token</label>
+<input type="password" id="loginToken" name="token" autocomplete="current-password" placeholder="ghp_...">
+</div>
+<div class="mb-4 text-sm rounded p-3" style="background:var(--card2);border:1px solid var(--border);line-height:1.7;color:var(--text2)">
+<strong style="color:var(--text)">How to get a token (one time only):</strong><br>
+1. Go to <strong>github.com</strong> &rarr; your profile photo &rarr; <strong>Settings</strong><br>
+2. Scroll down to <strong>Developer settings</strong> &rarr; <strong>Personal access tokens</strong> &rarr; <strong>Tokens (classic)</strong><br>
+3. Click <strong>Generate new token (classic)</strong>, tick <strong>gist</strong> only<br>
+4. Copy the token and paste above &mdash; your browser will offer to save it
+</div>
+<p id="loginError" class="text-sm mb-3" style="display:none;color:var(--red)"></p>
+<button type="submit" id="loginBtn" class="btn-gold w-full">Login with GitHub</button>
+</form>
+</div>
+</div>
+</div>
+
+<!-- HOME -->
+<div class="section" id="sec-home">
+<div class="py-16 px-4 text-center" style="background:linear-gradient(180deg,var(--card2),var(--bg))">
+<h1 class="text-4xl md:text-5xl font-bold mb-3" style="color:var(--gold)">Master Latin for GCSE OCR &amp; Eduqas</h1>
+<p class="text-lg text-roman2 mb-6">Interactive grammar, vocab, literature &amp; flashcards</p>
+<div class="flex flex-wrap gap-3 justify-center mb-8">
+<button class="btn-gold text-lg px-6 py-3" onclick="showSection('ocr')">Start OCR GCSE</button>
+</div>
+<div class="flex flex-wrap gap-4 justify-center mb-6">
+<div class="streak-badge"><span style="font-size:1.2rem">&#9733;</span> Streak: <strong id="homeStreak">0</strong> days</div>
+<div class="streak-badge">Best Score: <strong id="homeBest">0</strong>%</div>
+</div>
+<p class="italic text-roman2" style="font-size:1.05rem">'Start from the main verb' -- Dr Zanda</p>
+</div>
+</div>
+
+<!-- OCR GCSE DASHBOARD -->
+<div class="section" id="sec-ocr">
+<div class="max-w-6xl mx-auto px-4 py-8">
+<h2 class="text-3xl font-bold mb-6" style="color:var(--gold)">OCR GCSE Latin</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+<!-- Literature Card -->
+<div class="bg-card rounded-xl p-6 shadow-lg cursor-pointer border-2 border-roman hover:border-gold transition-colors" style="border-color:var(--border)" onclick="showSection('literature')">
+<h3 class="text-xl font-bold mb-2 text-gold">Literature Flashcards</h3>
+<p class="text-roman2">Quizlet-style flashcards for Tacitus, Pliny &amp; Virgil. Tap to flip, navigate through passages.</p>
+<div class="flex gap-2 mt-3 flex-wrap"><span class="text-sm px-2 py-1 rounded bg-card2">Tacitus</span><span class="text-sm px-2 py-1 rounded bg-card2">Pliny</span><span class="text-sm px-2 py-1 rounded bg-card2">Virgil</span></div>
+</div>
+
+<!-- Grammar Card -->
+<div class="bg-card rounded-xl p-6 shadow-lg cursor-pointer border-2 hover:border-gold transition-colors" style="border-color:var(--border)" onclick="showSection('grammar')">
+<h3 class="text-xl font-bold mb-2 text-gold">Grammar</h3>
+<p class="text-roman2">Declension tables (1st-5th), adjectives, irregular verbs. Practice mode with strict marking.</p>
+</div>
+
+<!-- Vocab Card -->
+<div class="bg-card rounded-xl p-6 shadow-lg cursor-pointer border-2 hover:border-gold transition-colors" style="border-color:var(--border)" onclick="showSection('vocab')">
+<h3 class="text-xl font-bold mb-2 text-gold">Vocabulary Trainer</h3>
+<p class="text-roman2">Type-the-answer trainer. See English, type Latin. Searchable word list with favourites.</p>
+</div>
+
+<!-- Tests Card -->
+<div class="bg-card rounded-xl p-6 shadow-lg cursor-pointer border-2 hover:border-gold transition-colors" style="border-color:var(--border)" onclick="showSection('tests')">
+<h3 class="text-xl font-bold mb-2 text-gold">Tests &amp; Practice</h3>
+<p class="text-roman2">Declension &amp; conjugation tests. 10 questions, strict marking, review mistakes.</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- LITERATURE SECTION -->
+<div class="section" id="sec-literature">
+<div class="max-w-6xl mx-auto px-4 py-8">
+<button class="btn-outline mb-6" onclick="showSection('ocr')">&larr; Back to OCR Dashboard</button>
+<h2 class="text-3xl font-bold mb-6" style="color:var(--gold)">Literature Flashcards</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-card rounded-xl p-6 shadow-lg cursor-pointer border-2 hover:border-gold transition-colors" style="border-color:var(--border)" onclick="openLitModal('tacitus')">
+<h3 class="text-xl font-bold text-gold mb-2">Tacitus</h3>
+<p class="text-roman2">Messalina -- Annales XI</p>
+<p class="text-sm text-roman2 mt-2" id="tacitusCount"></p>
+</div>
+<div class="bg-card rounded-xl p-6 shadow-lg cursor-pointer border-2 hover:border-gold transition-colors" style="border-color:var(--border)" onclick="openLitModal('pliny')">
+<h3 class="text-xl font-bold text-gold mb-2">Pliny</h3>
+<p class="text-roman2">Avunculus Meus -- Epistulae III.5</p>
+<p class="text-sm text-roman2 mt-2" id="plinyCount"></p>
+</div>
+<div class="bg-card rounded-xl p-6 shadow-lg cursor-pointer border-2 hover:border-gold transition-colors" style="border-color:var(--border)" onclick="openLitModal('virgil')">
+<h3 class="text-xl font-bold text-gold mb-2">Virgil</h3>
+<p class="text-roman2">Aeneid Book I -- OCR GCSE</p>
+<p class="text-sm text-roman2 mt-2" id="virgilCount"></p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- LITERATURE MODAL -->
+<div class="modal-overlay" id="litModal">
+<div class="modal-content">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-2xl font-bold text-gold" id="litModalTitle"></h3>
+<button class="text-2xl font-bold text-roman2 hover:text-red cursor-pointer" onclick="closeLitModal()" style="background:none;border:none;font-size:1.5rem">&times;</button>
+</div>
+<p class="text-sm text-roman2 mb-4">Tap/click the card to flip. Use arrows or swipe to navigate.</p>
+<div class="text-center mb-3"><span id="litCardNum" class="text-sm text-roman2"></span></div>
+<div class="flashcard" id="litFlashcard" onclick="flipLitCard()">
+<div class="flashcard-inner" id="litFlashcardInner">
+<div class="flashcard-front"><div id="litFront" class="text-lg" style="line-height:1.6"></div></div>
+<div class="flashcard-back"><div id="litBack" class="text-lg" style="line-height:1.6"></div></div>
+</div>
+</div>
+<div class="flex justify-center gap-4 mt-6">
+<button class="btn-outline" onclick="litPrev()">&larr; Prev</button>
+<button class="btn-gold" onclick="litNext()">Next &rarr;</button>
+</div>
+<hr class="my-6" style="border-color:var(--border)">
+<div class="flex justify-between items-center mb-4">
+<h4 class="text-lg font-bold text-gold">All Cards (List View)</h4>
+<button class="btn-outline text-sm" onclick="copyForQuizlet()">Copy for Quizlet</button>
+</div>
+<div id="litListView" class="space-y-2" style="max-height:400px;overflow-y:auto"></div>
+</div>
+</div>
+
+<!-- GRAMMAR SECTION -->
+<div class="section" id="sec-grammar">
+<div class="max-w-6xl mx-auto px-4 py-8">
+<button class="btn-outline mb-6" onclick="showSection('ocr')">&larr; Back to OCR Dashboard</button>
+<h2 class="text-3xl font-bold mb-6" style="color:var(--gold)">Grammar Reference &amp; Practice</h2>
+
+<div class="flex flex-wrap gap-2 mb-6">
+<button class="tab-btn active-tab" onclick="showGrammarTab('decl',this)">Declensions</button>
+<button class="tab-btn" onclick="showGrammarTab('adj',this)">Adjectives</button>
+<button class="tab-btn" onclick="showGrammarTab('verbs',this)">Irregular Verbs</button>
+<button class="tab-btn" onclick="showGrammarTab('practice',this)">Practice</button>
+</div>
+
+<div id="grammarDecl" class="grammar-tab">
+<h3 class="text-xl font-bold mb-4 text-gold">Noun Declensions</h3>
+<div class="space-y-6" id="declTables"></div>
+</div>
+
+<div id="grammarAdj" class="grammar-tab" style="display:none">
+<h3 class="text-xl font-bold mb-4 text-gold">Adjectives</h3>
+<div class="space-y-6" id="adjTables"></div>
+</div>
+
+<div id="grammarVerbs" class="grammar-tab" style="display:none">
+<h3 class="text-xl font-bold mb-4 text-gold">Irregular Verbs</h3>
+<div class="space-y-6" id="verbTables"></div>
+</div>
+
+<div id="grammarPractice" class="grammar-tab" style="display:none">
+<h3 class="text-xl font-bold mb-4 text-gold">Declension Practice</h3>
+<p class="text-roman2 mb-4">Decline the noun shown. Type your answer and press Enter or click Check.</p>
+<div class="bg-card rounded-xl p-6 shadow-lg max-w-lg" style="border:2px solid var(--border)">
+<p class="text-lg mb-2">Decline: <strong id="practiceNoun" class="text-gold"></strong></p>
+<p class="mb-4" id="practicePrompt"></p>
+<input type="text" id="practiceInput" placeholder="Type the form..." onkeydown="if(event.key==='Enter')checkPractice()">
+<div class="flex gap-3 mt-3">
+<button class="btn-gold" onclick="checkPractice()">Check</button>
+<button class="btn-outline" onclick="newPractice()">New Question</button>
+</div>
+<p id="practiceFeedback" class="mt-3 font-semibold"></p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- VOCABULARY SECTION -->
+<div class="section" id="sec-vocab">
+<div class="max-w-6xl mx-auto px-4 py-8">
+<button class="btn-outline mb-6" onclick="showSection('ocr')">&larr; Back to OCR Dashboard</button>
+<h2 class="text-3xl font-bold mb-6" style="color:var(--gold)">Vocabulary Trainer</h2>
+
+<div class="flex flex-wrap gap-2 mb-6">
+<button class="tab-btn active-tab" onclick="showVocabTab('trainer',this)">Typing Trainer</button>
+<button class="tab-btn" onclick="showVocabTab('list',this)">Word List</button>
+</div>
+
+<div id="vocabTrainer">
+<div class="bg-card rounded-xl p-6 shadow-lg max-w-lg mx-auto" style="border:2px solid var(--border)">
+<p class="text-sm text-roman2 mb-1" id="vocabProgress"></p>
+<p class="text-sm text-roman2 mb-3" id="vocabMeta"></p>
+<p class="text-xl mb-1 font-bold text-gold" id="vocabEnglish"></p>
+<p class="text-sm text-roman2 mb-4" id="vocabHint"></p>
+<input type="text" id="vocabInput" placeholder="Type the Latin word..." onkeydown="if(event.key==='Enter')checkVocab()">
+<div class="flex gap-3 mt-3 flex-wrap">
+<button class="btn-gold" onclick="checkVocab()">Check</button>
+<button class="btn-outline" onclick="revealVocab()">Reveal</button>
+<button class="btn-outline" onclick="vocabPrev()">&larr;</button>
+<button class="btn-outline" onclick="vocabNext()">&rarr;</button>
+</div>
+<p id="vocabFeedback" class="mt-3 font-semibold"></p>
+</div>
+</div>
+
+<div id="vocabList" style="display:none">
+<div class="mb-4"><input type="text" id="vocabSearch" placeholder="Search vocabulary..." oninput="filterVocab()" class="max-w-md"></div>
+<div class="flex flex-wrap gap-2 mb-4">
+<button class="tab-btn active-tab" onclick="filterVocabCat('All',this)">All</button>
+<button class="tab-btn" onclick="filterVocabCat('Noun',this)">Nouns</button>
+<button class="tab-btn" onclick="filterVocabCat('Verb',this)">Verbs</button>
+<button class="tab-btn" onclick="filterVocabCat('Pronoun',this)">Pronouns</button>
+<button class="tab-btn" onclick="filterVocabCat('Adjective',this)">Adjectives</button>
+<button class="tab-btn" onclick="filterVocabCat('Preposition',this)">Prepositions</button>
+</div>
+<div id="vocabListContent" class="space-y-1" style="max-height:60vh;overflow-y:auto"></div>
+</div>
+</div>
+</div>
+
+<!-- TESTS SECTION -->
+<div class="section" id="sec-tests">
+<div class="max-w-6xl mx-auto px-4 py-8">
+<button class="btn-outline mb-6" onclick="showSection('ocr')">&larr; Back to OCR Dashboard</button>
+<h2 class="text-3xl font-bold mb-6" style="color:var(--gold)">Tests &amp; Practice</h2>
+<p class="text-roman2 mb-6">Grammar and vocabulary tests only. 10 questions per test, strict marking.</p>
+
+<div id="testMenu" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-card rounded-xl p-6 shadow-lg cursor-pointer border-2 hover:border-gold transition-colors" style="border-color:var(--border)" onclick="startTest('declension')">
+<h3 class="text-xl font-bold text-gold mb-2">Declension Test</h3>
+<p class="text-roman2">Identify or produce correct noun forms across all 5 declensions.</p>
+</div>
+<div class="bg-card rounded-xl p-6 shadow-lg cursor-pointer border-2 hover:border-gold transition-colors" style="border-color:var(--border)" onclick="startTest('conjugation')">
+<h3 class="text-xl font-bold text-gold mb-2">Verb Conjugation Test</h3>
+<p class="text-roman2">Conjugate verbs in various tenses, persons and numbers.</p>
+</div>
+</div>
+
+<div id="testArea" style="display:none" class="bg-card rounded-xl p-6 shadow-lg max-w-lg mx-auto" style="border:2px solid var(--border)">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-xl font-bold text-gold" id="testTitle"></h3>
+<span class="text-sm text-roman2" id="testProgress"></span>
+</div>
+<p class="text-lg mb-4" id="testQuestion"></p>
+<input type="text" id="testInput" placeholder="Your answer..." onkeydown="if(event.key==='Enter')submitTestAnswer()">
+<div class="flex gap-3 mt-3">
+<button class="btn-gold" onclick="submitTestAnswer()">Submit</button>
+<button class="btn-outline" onclick="skipTestQ()">Skip</button>
+</div>
+<p id="testFeedback" class="mt-3 font-semibold"></p>
+</div>
+
+<div id="testResults" style="display:none" class="bg-card rounded-xl p-6 shadow-lg max-w-lg mx-auto">
+<h3 class="text-2xl font-bold text-gold mb-4 text-center" id="testScoreTitle"></h3>
+<div class="score-bar mb-4"><div class="score-bar-fill" id="testScoreBar"></div></div>
+<p class="text-center text-lg mb-4" id="testScoreText"></p>
+<div id="testMistakes" class="space-y-2 mb-4"></div>
+<div class="flex gap-3 justify-center">
+<button class="btn-gold" onclick="showSection('tests')">Back to Tests</button>
+<button class="btn-outline" onclick="showSection('progress')">View Progress</button>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- PROGRESS SECTION -->
+<div class="section" id="sec-progress">
+<div class="max-w-6xl mx-auto px-4 py-8">
+<h2 class="text-3xl font-bold mb-6" style="color:var(--gold)">Your Progress</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+<div class="bg-card rounded-xl p-4 shadow text-center border border-roman" style="border-color:var(--border)"><p class="text-sm text-roman2">Best Score</p><p class="text-3xl font-bold text-gold" id="progBest">0%</p></div>
+<div class="bg-card rounded-xl p-4 shadow text-center border border-roman" style="border-color:var(--border)"><p class="text-sm text-roman2">Tests Taken</p><p class="text-3xl font-bold text-gold" id="progTests">0</p></div>
+<div class="bg-card rounded-xl p-4 shadow text-center border border-roman" style="border-color:var(--border)"><p class="text-sm text-roman2">Favourites</p><p class="text-3xl font-bold text-gold" id="progFavs">0</p></div>
+</div>
+<h3 class="text-xl font-bold mb-3 text-gold">Recent Scores</h3>
+<div class="bg-card rounded-xl shadow overflow-x-auto mb-8" style="border:1px solid var(--border)">
+<table><thead><tr><th>Date</th><th>Test</th><th>Score</th></tr></thead><tbody id="progScoresBody"></tbody></table>
+</div>
+<h3 class="text-xl font-bold mb-3 text-gold">Recent Mistakes</h3>
+<div id="progMistakes" class="space-y-2"></div>
+</div>
+</div>
+
+<!-- ABOUT SECTION -->
+<div class="section" id="sec-about">
+<div class="max-w-3xl mx-auto px-4 py-8">
+<h2 class="text-3xl font-bold mb-6" style="color:var(--gold)">About LatinCoach</h2>
+<div class="bg-card rounded-xl p-6 shadow-lg space-y-4" style="border:2px solid var(--border)">
+<p>LatinCoach is a single-page web application designed to help GCSE students revise Latin literature, grammar, and vocabulary for OCR and Eduqas exam boards.</p>
+<p>The app features Quizlet-style literature flashcards, a vocabulary typing trainer, grammar reference tables with practice mode, and timed tests with strict marking.</p>
+<p>All progress, scores, and favourites are saved locally in your browser per user account.</p>
+<p class="text-sm text-roman2 p-3 rounded" style="background:var(--card2);border:1px solid var(--border)"><strong>Data storage:</strong> All progress, scores, and favourites are saved to a private GitHub Gist on your account. You can access your data from any device by logging in with the same GitHub Personal Access Token. Your token is saved locally in this browser for auto-login.</p>
+<p class="text-sm text-roman2">Built with Tailwind CSS. Classical Roman theme with dark mode support.</p>
+</div>
+</div>
+</div>
+
+<!-- HELP FAB -->
+<button class="help-fab" onclick="toggleHelp()" id="helpFab" style="display:none">?</button>
+<div class="modal-overlay" id="helpModal">
+<div class="modal-content max-w-lg">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-xl font-bold text-gold">Help</h3>
+<button class="text-2xl font-bold text-roman2 hover:text-red cursor-pointer" onclick="toggleHelp()" style="background:none;border:none">&times;</button>
+</div>
+<div class="space-y-3 text-sm">
+<p><strong>Vocabulary Typing Trainer:</strong> You are shown an English meaning and metadata. Type the Latin headword exactly (macrons are optional). Press Enter or click Check. Use Reveal if stuck. Navigate with arrow buttons.</p>
+<p><strong>Literature Flashcards:</strong> Tap or click the card to flip between Latin (front) and English (back). Use Prev/Next to navigate. Below the card is a list view of all flashcards. Use "Copy for Quizlet" to export in tab-separated format.</p>
+<p><strong>Grammar Practice:</strong> You are given a noun and asked to provide a specific case/number form. Macrons are optional. Strict marking.</p>
+<p><strong>Tests:</strong> 10 questions per test (declension or conjugation). Your score is saved. Review mistakes on the Progress page.</p>
+<p><strong>Login:</strong> Uses a GitHub Personal Access Token (gist scope). Your data is saved to a private GitHub Gist and accessible from any device with the same token. Your token is cached in this browser for auto-login.</p>
+</div>
+</div>
+</div>
+
+<script>
+// ===================== DATA =====================
+const TACITUS_DATA = [
+{la:"Messalina novo et quasi insano amore incensa est.",en:"Messalina was inflamed by a new and almost insane passion."},
+{la:"Nam in C. Silium, iuventutis Romanae pulcherrimum, ita exarserat",en:"For she has become aflame towards Caius Silius, the most handsome of Roman youth, to such an extent,"},
+{la:"ut Iuniam Silanam, nobilem feminam, matrimonio eius exturbaret",en:"that she drove out from marriage with him, Julia Silana, who was a woman of noble birth,"},
+{la:"liberoque adultero potiretur.",en:"so she was able to get possession of a lover now unattached."},
+{la:"Sed neque Silius flagitii aut periculi nescius erat:",en:"Nor was Silius unaware of the scandal or of the danger:"},
+{la:"sed intellexit exitium, si abnueret, fore certum",en:"but he understood that if he were to refuse, death would be certain,"},
+{la:"et, si consentiret, nonnullam facinoris celandi spem esse;",en:"and if he were to agree, there would be more than little hope of the crime being hidden;"},
+{la:"simulque, se magna praemia accepturum.",en:"and at the same time, he would receive great rewards."},
+{la:"Igitur placuit neglegere futura praesentibus frui.",en:"Therefore, it pleased him to ignore future things, and to enjoy present things."},
+{la:"Illa non furtim sed multis cum comitibus ventitat domum,",en:"She not secretly, but with many attendants, kept coming to his house,"},
+{la:"egredienti adhaeret, dat opes honoresque;",en:"she clings on to him when going out and gives wealth and honours;"},
+{la:"postremo servi, liberti, paratus principis apud adulterum saepe videbatur.",en:"Lastly, slaves, freedmen, the emperor's possessions were often being seen at the house of the adulterer."},
+{la:"At Claudius matrimonii sui ignarus.",en:"But Claudius was ignorant of his own marriage."},
+{la:"Iam Messalina propter facultatem adulteriorum ad novas libidines versa est.",en:"Now Messalina, because of the easiness of adultery, turned to new pleasures."},
+{la:"Silius, sive fatali insania an ipsa pericula remedium imminentium periculorum ratus,",en:"Silius, whether by fatal madness, or thinking the dangers themselves were a defence of threatening dangers,"},
+{la:"abrumpi dissimulationem urgebat:",en:"urged pretending to be torn aside:"},
+{la:"quippe non exspectandum, dum princeps senesceret.",en:"in as much as it was not to be waited, until the emperor should grow old."},
+{la:"Se caelibem, orbum, nuptiis et adoptando Britannico paratum.",en:"Himself, a bachelor, childless, prepared for marriage and for the adopting of Britannicus."},
+{la:"Eandem Messalinae potentiam mansuram esse, addita securitate,",en:"The same power would remain to Messalina, with security added,"},
+{la:"si praevenirent Claudium, qui insidiis incautus sed ad iram celer esset.",en:"if they were to warn Claudius, who was careless to treachery, but speedy to anger."},
+{la:"Messalina, non amore in maritum,",en:"Messalina, not from love for her husband,"},
+{la:"sed verita ne Silius summam adeptus se sperneret,",en:"but fearing lest Silius might cast her aside, having obtained the heights,"},
+{la:"diu haesitavit, sed tandem persuasum.",en:"for a long time hesitated, but at last it was persuaded to her."},
+{la:"Nomen enim matrimonii concupivit ob magnitudinem infamiae;",en:"For she desired the name of marriage, on account of the size of her ill-repute;"},
+{la:"nec ultra morata quam dum sacrificii gratia Claudius Ostiam proficisceretur,",en:"and not delaying any longer, than until Claudius should set out for Ostia, for the purpose of sacrifice,"},
+{la:"cuncta nuptiarum solemnia celebrat.",en:"she celebrates all the ceremonies of marriage."},
+{la:"Igitur domus principis inhorruit",en:"Therefore, the household of the emperor was appalled,"},
+{la:"maximeque ei qui potentiam habebant timuerunt ne res verterentur;",en:"and in particular, those who used to have influence, feared lest things were going to change;"},
+{la:"spem tamen habebant, si Claudio de atrocitate sceleris persuasissent,",en:"however they had hope, if they could have persuaded Claudius about the enormity of the crime,"},
+{la:"Messalinam posse opprimi sine quaestione damnatam;",en:"Messalina could be crushed, having been found guilty, without an investigation."},
+{la:"Sed periculum esse ne ille defensionem audiret,",en:"But there was danger, lest he should listen to a defence,"},
+{la:"neve clausae aures etiam confitenti non essent.",en:"or lest his ears should not be closed, even to one confessing guilt."},
+{la:"Narcissus, occasionem quaerens, cum Caesar diu apud Ostiam moraretur,",en:"Narcissus, seeking an opportunity, since Caesar was delaying at Ostia for a long time,"},
+{la:"duas eius paelices largitione et promissis perpulit delationem subire.",en:"prevailed upon two concubines of his, to undertake the informing, by bribery and promises."},
+{la:"Exim Calpurnia (id alteri paelici nomen) ubi datum est secretum,",en:"Straightaway, Calpurnia (this was the name of one of the concubines) when a private audience was granted,"},
+{la:"ad genua Caesaris provoluta nupisse Messalinam Silio exclamat;",en:"having fallen before the knees of Caesar, cries out that Messalina has married Silius;"},
+{la:"altera paelice haec confirmante, Calpurnia cieri Narcissum postulat.",en:"Since the other concubine was confirming these things, Calpurnia demands that Narcissus be summoned."},
+{la:"Qui 'discidiumne tuum' inquit, 'novisti?",en:"Who said, 'Did you know about your divorce?"},
+{la:"nam matrimonium Silii vidit populus et senatus et milites;",en:"For the people and the senate and soldiers have seen her marriage with Silius;"},
+{la:"ac nisi celeriter agis, tenet urbem maritus.'",en:"and unless you act quickly, her husband holds the city.'"},
+{la:"Non solum rumor interea,",en:"Meanwhile, not only rumour,"},
+{la:"sed omnia cognovisse et venire promptum ultioni adferrent.",en:"but from all sides, messengers hasten to Messalina, who report that Claudius has learnt everything and he is coming eager for vengeance."},
+{la:"Igitur Messalina Lucullianos in hortos,",en:"Therefore, they separate -- Messalina into the garden of Lucullus"},
+{la:"Silius dissimulando metui ad Forum digrediuntur.",en:"and Silius into the forum, by way of hiding fear."},
+{la:"Illa tamen, quamquam res adversae consilium eximerent,",en:"She however, although the hostile circumstances took away her thinking,"},
+{la:"ire obviam et aspici a marito statim constituit,",en:"at once she decided to go meet and to be viewed by her husband,"},
+{la:"quod saepe ei fuerat subsidium;",en:"which has often been for her, a great help;"},
+{la:"misitque ut Britannicus et Octavia in complexum patris irent.",en:"and she sent word that Britannicus and Octavia should go into the embrace of their father."},
+{la:"Atque interim, tribus omnino comitantibus -- tam repens erat solitudo --",en:"And meanwhile, with three people in total accompanying her -- so sudden was isolation --"},
+{la:"postquam per urbem pedibus ivit,",en:"after she went on foot through the city,"},
+{la:"vehiculo, quo purgamenta hortorum eripiuntur, Ostiensem viam intrat.",en:"she enters onto the road for Ostia, in a cart, by which litter of the gardens are carried away."},
+{la:"Nullam misericordiam civibus commovit quia flagitiorum deformitas praevalebat.",en:"She aroused no sympathy with the citizens, because the vileness of her vices was too strong."},
+{la:"Et iam erat in aspectu Claudii",en:"And now she was in sight of Claudius"},
+{la:"clamitabatque ut audiret Octaviae et Britannici matrem.",en:"and was shouting that he should hear the mother of Octavia and Britannicus."},
+{la:"Narcissus tamen obstrepuit, Silium et nuptias referens;",en:"Narcissus, however, interrupted her, bringing up Silius and the marriage;"},
+{la:"simul codicillos libidinum indices tradidit,",en:"At the same time he handed over tablets, proofs of her sexual misdemeanours,"},
+{la:"quibus visus Caesaris averteret.",en:"by which he might turn aside the views of Caesar."},
+{la:"Nec multo post urbem ingredienti offerebantur liberi,",en:"And not much afterwards having entered into the city, the children were being brought forward,"},
+{la:"sed Narcissus amoveri eos iussit.",en:"but Narcissus ordered them to be taken away."},
+{la:"Mirum inter haec silentium Claudii;",en:"Amongst this, there was a strange silence of Claudius;"},
+{la:"omnia liberto oboediebat;",en:"he used to defer to his freedman in all things"},
+{la:"qui contionem militum in castris paravit.",en:"who organised an assembly of soldiers in the camp."},
+{la:"Apud eos praemonente Narcisso princeps pauca verba fecit:",en:"After Narcissus had briefed them, the emperor made a few words:"},
+{la:"continuus dehinc clamor militum nomina reorum et poenas flagitantium.",en:"after this, there was a non-stop shouting from the soldiers, demanding the name of the guilty and punishments."},
+{la:"Ductus Silius ad tribunal non defensionem, nec moras temptavit,",en:"Silius, having been led to the tribunal, attempted not a defence, nor delays,"},
+{la:"sed precatus est ut mors acceleraretur.",en:"but he begged that death should be hastened."},
+{la:"Interim Messalina Lucullianis in hortis prolatare vitam,",en:"Meanwhile, Messalina, in the Lucullan garden tried to spin out life,"},
+{la:"componere preces, nonnulla spe et ira;",en:"to think up pleadings, not without hope and anger;"},
+{la:"tantam superbiam etiam tum gerebat,",en:"even then she was possessing such a great arrogance,"},
+{la:"ac nisi caedem eius Narcissus properavisset,",en:"unless Narcissus had not hastened her execution,"},
+{la:"vertisset pernicies in accusatorem.",en:"the doom would have turned onto her accuser."},
+{la:"Nam Claudius domum regressus, ubi cena vinoque incaluit,",en:"For Claudius, having returned home, when he has been warmed up with dinner and wine,"},
+{la:"imperavit ut femina misera",en:"ordered that the poor woman"},
+{la:"(hoc enim verbo Claudium usum esse ferunt)",en:"(for they say that Claudius was accustomed to have used this word)"},
+{la:"ad causam dicendam postridie adesset.",en:"should be present the next day to plead her case."},
+{la:"Quod ubi Narcissus audivit et languescere iram redire amorem vidit,",en:"When Narcissus saw his anger to be growing weaker and love to be returning,"},
+{la:"timebat, si moraretur, propinquam noctem et uxorii cubiculi memoriam:",en:"he was afraid, if he should delay, the following night and the fond memory of the marital bedroom:"},
+{la:"Igitur prorumpit denuntiatque centurionibus et tribuno, qui aderat,",en:"Therefore, he bursts forth and proclaims to the centurions and to a tribune, who was present,"},
+{la:"exsequi caedem: ita imperatorem iubere.",en:"to carry out the execution: thus to obey the emperor."},
+{la:"Missus quoque unus e libertis;",en:"Also, one from the freedmen having been sent out,"},
+{la:"is raptim in hortos praegressus repperit Messalinam, humi fusam;",en:"he hurriedly having gone into the gardens, found Messalina, stretched out, on the ground;"},
+{la:"adsidebat mater Lepida, quae florenti filiae haud concors fuerat;",en:"her mother, Lepida, was sitting beside her, who was not close to her daughter while being successful;"},
+{la:"Sed supremis eius necessitatibus ad misericordiam versa",en:"But turned to pity in her final desperate circumstances,"},
+{la:"suadebat ne percussorem opperiretur;",en:"she was persuading her that she should not await the executioner:"},
+{la:"transisse vitam neque aliud quam mortem decoram quaerendum.",en:"she said her life to be over and neither was there anything other than a fitting and dignified death to be sought."},
+{la:"Sed nihil honestum inerat Messalinae animo, per libidines corrupto:",en:"But there was nothing honest in the mind of Messalina, having been rotted by a life of pleasures:"},
+{la:"lacrimae et questus inriti effundebantur,",en:"tears and useless complainings were poured forth,"},
+{la:"cum impetu venientium pulsae sunt fores adstititque tribunus.",en:"when by the onrush of men coming on the doors were beaten down and standing present was the tribune."},
+{la:"Tunc primum Messalina fortunam suam intellexit ferrumque accepit;",en:"Then, for the first time, Messalina understood her own fate and received the dagger;"},
+{la:"quod frustra iugulo aut pectori per trepidationem admovens,",en:"bringing close which to her throat or breast vainly through timidness,"},
+{la:"ictu tribuni transfigitur.",en:"she is run through by a blow of the tribune."},
+{la:"Corpus matri concessum.",en:"Her body was granted to her mother."}
+];
+
+const PLINY_DATA = [
+{la:"ante lucem ibat ad Vespasianum imperatorem",en:"Before day-break he used to go to the emperor Vespasian"},
+{la:"(nam ille quoque noctibus utebatur),",en:"(for he too made use of the nights),"},
+{la:"deinde ad officium sibi delegatum.",en:"then he attended to his official duties."},
+{la:"reversus domum reliquum tempus studiis dabat.",en:"Having returned home, he devoted the remainder of his time to his studies."},
+{la:"saepe post cibum (qui veterum more interdiu levis et facilis erat)",en:"Often, after some food (which during the day was light and easily digested in the manner of our ancestors),"},
+{la:"aestate, si quid otii erat, iacebat in sole,",en:"in the summer, if there was any time for leisure, he would lie in the sun"},
+{la:"liber legebatur, adnotabat excerpebatque.",en:"and a book was read aloud while he made notes and extracts."},
+{la:"nihil enim legit quod non excerperet;",en:"For he read nothing which he didn't make notes from;"},
+{la:"dicere etiam solebat nullum librum esse tam malum",en:"he was even accustomed to say that no book was so bad"},
+{la:"ut non aliqua parte prodesset.",en:"that it couldn't be of use in some part."},
+{la:"post solem plerumque aqua frigida lavabatur,",en:"After rest in the sun, he usually washed in cold water,"},
+{la:"deinde gustabat dormiebatque minimum;",en:"then had a snack and had a short nap;"},
+{la:"mox quasi alio die studebat in cenae tempus.",en:"soon he studied up until dinner time as if it were a new day."},
+{la:"super cenam liber legebatur adnotabatur, et quidem cursim.",en:"A book was read aloud over dinner and he made notes on it, and indeed rapidly."},
+{la:"haec inter medios labores urbisque fremitum.",en:"This he did in the midst of his public duties and the bustle of the city."},
+{la:"in secessu solum balinei tempus studiis eximebatur",en:"But away from the city, the only time he was taken away from his studies was for his bath"},
+{la:"(cum dico 'balinei', de interioribus loquor;",en:"(and when I say 'bath' I am talking about the inner rooms;"},
+{la:"nam dum destringitur tergiturque, audiebat aliquid aut dictabat).",en:"for whilst he was being rubbed down and dried, he was listening to something or dictating)."},
+{la:"in itinere quasi solutus ceteris curis, huic uni vacabat:",en:"Whilst travelling he devoted himself to this one concern, as if released from the rest of his cares:"},
+{la:"ad latus notarius cum libro et pugillaribus,",en:"he kept a secretary at his side with a book and writing tablets,"},
+{la:"cuius manus hieme manicis muniebantur,",en:"whose hands were protected in winter by long sleeves,"},
+{la:"ut ne caeli quidem asperitas ullum studii tempus eriperet;",en:"so that not even harsh weather would take away any time for study;"},
+{la:"qua ex causa Romae quoque sella vehebatur.",en:"for which reason, too, he used to be carried about Rome in a chair."},
+{la:"repeto me correptum ab eo, quod ambularem:",en:"I remember that I was scolded by him because I was walking:"},
+{la:"'poteras' inquit 'has horas non perdere';",en:"'You could', he said 'not have wasted these hours';"},
+{la:"nam perire omne tempus arbitrabatur, quod studiis non impenderetur. vale.",en:"for he thought that all time was wasted that was not spent in study. Goodbye."}
+];
+
+const VIRGIL_DATA = [
+{la:"urbs antiqua fuit, Tyrii tenuere coloni, Karthago",en:"There was an ancient city (Tyrian settlers possessed it), Carthage."},
+{la:"Italiam contra Tiberinaque longe ostia",en:"facing Italy and the mouth of the Tiber far away."},
+{la:"dives opum studiisque asperrima belli",en:"rich in resources and very fierce in war's activities."},
+{la:"quam Iuno fertur terris magis omnibus unam posthabita coluisse Samo",en:"which alone Juno is said to have cared for more than all other lands, since she esteemed Samos less."},
+{la:"hic illius arma, hic currus fuit",en:"Here was her armour, here was her chariot."},
+{la:"hoc regnum dea gentibus esse, si qua fata sinant, iam tum tenditque fovetque",en:"even then the goddess both aimed and cherished (the aim) that this (city) should be the kingdom of (all) races, if the fates allowed it in any way."},
+{la:"progeniem sed enim Troiano a sanguine duci audierat",en:"But in fact, she had heard that offspring was being produced from Trojan blood."},
+{la:"Tyrias olim quae verteret arces",en:"to overthrow the Tyrian citadels some day."},
+{la:"hinc populum late regem belloque superbum venturum excidio Libyae",en:"from this a race would come ruling far and wide and arrogant in war to destroy Libya."},
+{la:"sic volvere Parcas",en:"thus, the fates were bringing to pass."},
+{la:"id metuens veterisque memor Saturnia belli",en:"The daughter of Saturn, fearing this, and mindful of the old war."},
+{la:"prima quod ad Troiam pro caris gesserat Argis",en:"which she had previously waged near Troy on behalf of her beloved Greeks."},
+{la:"necdum etiam causae irarum saevique dolores exciderant animo",en:"for even now the causes of her (outbursts of) anger and her savage pains had not yet disappeared from her mind."},
+{la:"manet alta mente repostum iudicium Paridis",en:"the judgement of Paris remained buried deep in her mind."},
+{la:"spretaeque iniuria formae et genus invisum et rapti Ganymedis honores",en:"and the insult done to her spurned beauty and the hated race and the honours given to the snatched Ganymede."},
+{la:"his accensa super iactatos aequore toto Troas",en:"fired by these (injustices) as well, she kept the Trojans tossed about over the whole sea."},
+{la:"reliquias Danaum atque immitis Achilli",en:"the remnants left by the Greeks and savage Achilles."},
+{la:"arcebat longe Latio",en:"far from Latium."},
+{la:"multosque per annos errabant acti fatis maria omnia circum",en:"and for many years they wandered driven by the fates around all the seas."},
+{la:"tantae molis erat Romanam condere gentem",en:"It involved such great difficulty to found the Roman race."},
+{la:"vix e conspectu Siculae telluris in altum vela dabant laeti",en:"Scarcely out of sight of the land of Sicily, (the Trojans) were happily sailing into the high sea."},
+{la:"et spumas salis aere ruebant",en:"and churning up the foam of the salt sea with their bronze (prows)."},
+{la:"cum Iuno aeternum servans sub pectore vulnus haec secum",en:"when Juno, retaining the everlasting wound beneath her breast, (said) these (words) within herself."},
+{la:"'mene incepto desistere victam nec posse Italia Teucrorum avertere regem",en:"'To think that I, defeated, should give up my purpose, and not be able to divert the king of the Trojans from Italy!"},
+{la:"quippe vetor fatis",en:"Of course, I am forbidden by the fates."},
+{la:"Pallasne exurere classem Argivum atque ipsos potuit submergere ponto",en:"Was Pallas able to burn up the fleet of the Greeks and drown (the Greeks) themselves in the sea?"},
+{la:"unius ob noxam et furias Aiaci Oilei",en:"because of one man's offence and the madness of Ajax, son of Oileus?"},
+{la:"ipsa Iovis rapidum iaculata e nubibus ignem",en:"(She) herself, hurling the swift fire of Jupiter from the clouds."},
+{la:"disiecitque rates evertitque aequora ventis",en:"both scattered the ships and upturned the seas with the winds."},
+{la:"illum exspirantem transfixo pectore flammas",en:"(while) him, as he breathed forth flame from his pierced breast."},
+{la:"turbine corripuit scopuloque infixit acuto",en:"she snatched up in a whirlwind and impaled on a sharp rock."},
+{la:"ast ego, quae divum incedo regina Iovisque et soror et coniunx",en:"But I, who (grandly) walk as queen of the gods, and both sister and wife of Jupiter."},
+{la:"una cum gente tot annos bella gero",en:"have been waging wars for so many years with one race."},
+{la:"et quisquam numen Iunonis adorat praeterea",en:"And does anyone worship the divine power of Juno any more"},
+{la:"aut supplex aris imponet honorem?",en:"or in supplication will (anyone) place an offering upon (her) altars?"},
+{la:"talia flammato secum dea corde volutans",en:"The goddess, turning over such (thoughts) with herself in her inflamed heart,"},
+{la:"nimborum in patriam, loca feta furentibus Austris, Aeoliam venit.",en:"came to the land of the clouds, Aeolia, an area teeming with raging south winds."},
+{la:"hic vasto rex Aeolus antro",en:"Here, King Aeolus in a huge cave"},
+{la:"luctantes ventos tempestatesque sonoras imperio premit",en:"by means of his power confines the struggling winds and sounding storms"},
+{la:"ac vinclis et carcere frenat.",en:"and curbs them with chains and a prison."},
+{la:"illi indignantes magno cum murmure montis circum claustra fremunt;",en:"They, indignant, roar around the prison bars accompanied by the mighty murmur of the mountain;"},
+{la:"celsa sedet Aeolus arce sceptra tenens",en:"Aeolus sits in the lofty citadel, holding the sceptre,"},
+{la:"mollitque animos et temperat iras.",en:"soothes their feelings and restrains their outbursts of anger."},
+{la:"ni faciat, maria ac terras caelumque profundum",en:"If he did not do (this), they would doubtless carry hurriedly away with them seas, lands and the high heaven"},
+{la:"quippe ferant rapidi secum verrantque per auras;",en:"and sweep them through the breezes;"},
+{la:"sed pater omnipotens speluncis abdidit atris hoc metuens",en:"but the all-powerful father, fearing this, hid (them) in dark caverns,"},
+{la:"molemque et montes insuper altos imposuit,",en:"placed a mass of high mountains on top,"},
+{la:"regemque dedit qui foedere certo",en:"and gave them a king so that, under a fixed contract,"},
+{la:"et premere et laxas sciret dare iussus habenas.",en:"he might know both how to tighten and to relax and give the reins when ordered."},
+{la:"ad quem tum Iuno supplex his vocibus usa est:",en:"To him, then, Juno in supplication used these words:"},
+{la:"'Aeole (namque tibi divum pater atque hominum rex",en:"'Aeolus (for to you the father of the gods and king of men"},
+{la:"et mulcere dedit fluctus et tollere vento),",en:"has granted both to calm the waves and raise them with the wind),"},
+{la:"gens inimica mihi Tyrrhenum navigat aequor",en:"a race hostile to me sails the Etruscan sea"},
+{la:"Ilium in Italiam portans victosque penates:",en:"carrying Troy and its defeated household gods to Italy:"},
+{la:"incute vim ventis submersasque obrue puppes,",en:"strike violence into the winds, sink and destroy their ships,"},
+{la:"aut age diversos et dissice corpora ponto.",en:"or drive them in different directions and scatter the bodies in the ocean."},
+{la:"sunt mihi bis septem praestanti corpore Nymphae,",en:"I have twice seven Nymphs of outstanding body,"},
+{la:"quarum quae forma pulcherrima Deiope,",en:"of whom she who (is) the most beautiful in form, Deiopea,"},
+{la:"conubio iungam stabili propriamque dicabo,",en:"I will join (with you) in steadfast marriage and consecrate her as your own,"},
+{la:"omnes ut tecum meritis pro talibus annos exigat",en:"so that, in return for such services, she might spend all her years with you"},
+{la:"et pulchra faciat te prole parentem.",en:"and make you a parent with a beautiful offspring."},
+{la:"Aeolus haec contra:",en:"In answer to this Aeolus (said):"},
+{la:"'tuus, o regina, quid optes explorare labor;",en:"'O queen, (it is) your task to search out what you desire;"},
+{la:"mihi iussa capessere fas est.",en:"for me, it is right to carry out your orders."},
+{la:"tu mihi quodcumque hoc regni,",en:"You provide for me this modest kingdom,"},
+{la:"tu sceptra Iovemque concilias,",en:"you provide the sceptre and Jupiter's (favour),"},
+{la:"tu das epulis accumbere divum",en:"you grant me to recline at the banquet of the gods,"},
+{la:"nimborumque facis tempestatumque potentem.",en:"and make (me) master of the clouds and storms."},
+{la:"haec ubi dicta, cavum conversa cuspide montem impulit in latus;",en:"When these things had been said, reversing his spear, he struck the hollow mountain on the side;"},
+{la:"ac venti velut agmine facto, qua data porta, ruunt",en:"and the winds, as if they had formed an (army) column, rush wherever passage had been given"},
+{la:"et terras turbine perflant.",en:"and blow through the lands with a whirlwind."},
+{la:"incubuere mari totumque a sedibus imis",en:"They fell upon the sea and churn up everything from their lowest depths"},
+{la:"una Eurusque Notusque ruunt creberque procellis Africus",en:"and Eurus and Notus together and Africus, abundant with storms"},
+{la:"et vastos volvunt ad litora fluctus",en:"roll huge waves towards the coasts"},
+{la:"insequitur clamorque virum stridorque rudentum",en:"There follows both a shout of men and the hissing of cables"},
+{la:"eripiunt subito nubes caelumque diemque",en:"suddenly, the clouds snatch away both sky and daylight"},
+{la:"Teucrorum ex oculis",en:"from the eyes of the Trojans"},
+{la:"ponto nox incubat atra",en:"black night falls upon the sea"},
+{la:"intonuere poli et crebris micat ignibus aether",en:"the heavens thundered, the upper air flashes with abundant fires"},
+{la:"praesentemque viris intentant omnia mortem",en:"and everything threatens instant death for the men"},
+{la:"extemplo Aeneae solvuntur frigore membra",en:"Immediately, Aeneas's limbs were loosened with an icy terror"},
+{la:"ingemit et duplices tendens ad sidera palmas",en:"he groaned and, stretching out both his palms towards the stars"},
+{la:"talia voce refert",en:"he repeated such (words) aloud"},
+{la:"o terque quaterque beati",en:"'O thrice and four times blessed (are those)"},
+{la:"quis ante ora patrum Troiae sub moenibus altis contigit oppetere",en:"to whom it befell to die before the faces of their fathers beneath the lofty walls of Troy"},
+{la:"o Danaum fortissime gentis Tydide",en:"O son of Tydeus, bravest of the race of Greeks"},
+{la:"mene Iliacis occumbere campis non potuisse",en:"To think that I was not able to fall on the plains of Troy"},
+{la:"tuaque animam hanc effundere dextra",en:"and pour out this life beneath your right hand"},
+{la:"saevus ubi Aeacidae telo iacet Hector",en:"where fierce Hector lies beneath the spear of the descendant of Aeacus"},
+{la:"ubi ingens Sarpedon",en:"where mighty Sarpedon (lies)"},
+{la:"ubi tot Simois correpta sub undis scuta virum galeasque et fortia corpora volvit",en:"where the Simois, having seized so many shields of heroes, rolls them, helmets and brave bodies beneath its waves"},
+{la:"talia iactanti stridens Aquilone procella velum adversa ferit",en:"While he was shouting such (words), a storm, whistling with the North wind, struck the sail full in front"},
+{la:"fluctusque ad sidera tollit",en:"and raised the waves to the stars"},
+{la:"franguntur remi, tum prora avertit et undis dat latus",en:"The oars were broken, then the prow turned away and offered the side to the waves"},
+{la:"insequitur cumulo praeruptus aquae mons",en:"a sheer mountain of water followed in a mass"},
+{la:"hi summo in fluctu pendent",en:"Some hung on the top of the wave"},
+{la:"his unda dehiscens terram inter fluctus aperit",en:"for others a yawning wave revealed the earth among the waves"},
+{la:"furit aestus harenis",en:"(while) the seething sea raged with the sands"},
+{la:"tres Notus abreptas in saxa latentia torquet",en:"The South wind, having snatched three (ships) hurled them onto hidden rocks"},
+{la:"saxa vocant Itali mediis quae in fluctibus Aras",en:"(rocks in the middle of the waves which the Italians call the Altars)"},
+{la:"dorsum immane mari summo",en:"a huge ridge on top of the sea"},
+{la:"tres Eurus ab alto in brevia et syrtes urget",en:"three the East wind pushed from the high seas onto shoals and sandbanks"},
+{la:"miserabile visu",en:"wretched to behold"},
+{la:"inliditque vadis atque aggere cingit harenae",en:"dashed them onto the shallows and surrounded them with a mound of sand"},
+{la:"unam, quae Lycios fidumque vehebat Oronten",en:"The huge sea, (falling) from its highest point, struck one (ship) on the stern, which was carrying the Lycians and faithful Orontes"},
+{la:"ipsius ante oculos ingens a vertice pontus in puppim ferit",en:"before the very eyes (of Aeneas):"},
+{la:"excutitur pronusque magister volvitur in caput",en:"the Helmsman is shaken off and as he bends forward is rolled headlong"},
+{la:"ast illam ter fluctus ibidem torquet agens circum",en:"but the ship, a wave whirls round three times on the same spot, driving it around"},
+{la:"et rapidus vorat aequore vertex",en:"and a devouring whirlpool swallows it up in the sea"},
+{la:"apparant rari nantes in gurgite vasto",en:"Far apart (men) become visible swimming in the immense whirlpool"},
+{la:"arma virum tabulaeque et Troia gaza per undas",en:"(along with) the arms of men, planks, and Trojan treasure throughout the waves"},
+{la:"iam validam Ilionei navem, iam fortis Achatae",en:"Now the storm overcame Ilioneus' strong ship, now brave Achates'"},
+{la:"et qua vectus Abas, et qua grandaevus Aletes",en:"and both (the ship) in which Abas was carried and the one in which Aletes, advanced in years"},
+{la:"vicit hiems",en:"the storm overcame"},
+{la:"laxis laterum compagibus omnes accipiunt inimicum imbrem rimisque fatiscunt",en:"when the joints of the sides had been loosened all (the ships) take in the hostile water and gape with cracks"}
+];
+
+const VOCAB_DATA = [
+{latin:"puella",en:"girl",cat:"Noun",hint:"1st decl. fem."},
+{latin:"servus",en:"slave",cat:"Noun",hint:"2nd decl. masc."},
+{latin:"bellum",en:"war",cat:"Noun",hint:"2nd decl. neut."},
+{latin:"rex",en:"king",cat:"Noun",hint:"3rd decl. masc."},
+{latin:"civis",en:"citizen",cat:"Noun",hint:"3rd decl. masc./fem."},
+{latin:"manus",en:"hand, band",cat:"Noun",hint:"4th decl. fem."},
+{latin:"dies",en:"day",cat:"Noun",hint:"5th decl. masc./fem."},
+{latin:"dominus",en:"master, lord",cat:"Noun",hint:"2nd decl. masc."},
+{latin:"pater",en:"father",cat:"Noun",hint:"3rd decl. masc."},
+{latin:"mater",en:"mother",cat:"Noun",hint:"3rd decl. fem."},
+{latin:"filius",en:"son",cat:"Noun",hint:"2nd decl. masc."},
+{latin:"filia",en:"daughter",cat:"Noun",hint:"1st decl. fem."},
+{latin:"urbs",en:"city",cat:"Noun",hint:"3rd decl. fem."},
+{latin:"nox",en:"night",cat:"Noun",hint:"3rd decl. fem."},
+{latin:"vir",en:"man",cat:"Noun",hint:"2nd decl. masc."},
+{latin:"femina",en:"woman",cat:"Noun",hint:"1st decl. fem."},
+{latin:"deus",en:"god",cat:"Noun",hint:"2nd decl. masc."},
+{latin:"corpus",en:"body",cat:"Noun",hint:"3rd decl. neut."},
+{latin:"nomen",en:"name",cat:"Noun",hint:"3rd decl. neut."},
+{latin:"tempus",en:"time",cat:"Noun",hint:"3rd decl. neut."},
+{latin:"miles",en:"soldier",cat:"Noun",hint:"3rd decl. masc."},
+{latin:"dux",en:"leader",cat:"Noun",hint:"3rd decl. masc."},
+{latin:"amo",en:"I love",cat:"Verb",hint:"1st conj."},
+{latin:"moneo",en:"I warn, advise",cat:"Verb",hint:"2nd conj."},
+{latin:"rego",en:"I rule",cat:"Verb",hint:"3rd conj."},
+{latin:"audio",en:"I hear",cat:"Verb",hint:"4th conj."},
+{latin:"capio",en:"I take, capture",cat:"Verb",hint:"3rd -io conj."},
+{latin:"sum",en:"I am",cat:"Verb",hint:"irregular"},
+{latin:"possum",en:"I am able, I can",cat:"Verb",hint:"irregular"},
+{latin:"eo",en:"I go",cat:"Verb",hint:"irregular"},
+{latin:"fero",en:"I carry, bear",cat:"Verb",hint:"irregular"},
+{latin:"volo",en:"I wish, want",cat:"Verb",hint:"irregular"},
+{latin:"do",en:"I give",cat:"Verb",hint:"1st conj."},
+{latin:"dico",en:"I say, speak",cat:"Verb",hint:"3rd conj."},
+{latin:"facio",en:"I make, do",cat:"Verb",hint:"3rd -io conj."},
+{latin:"video",en:"I see",cat:"Verb",hint:"2nd conj."},
+{latin:"venio",en:"I come",cat:"Verb",hint:"4th conj."},
+{latin:"mitto",en:"I send",cat:"Verb",hint:"3rd conj."},
+{latin:"peto",en:"I seek, attack",cat:"Verb",hint:"3rd conj."},
+{latin:"duco",en:"I lead",cat:"Verb",hint:"3rd conj."},
+{latin:"iubeo",en:"I order",cat:"Verb",hint:"2nd conj."},
+{latin:"bonus",en:"good",cat:"Adjective",hint:"1st/2nd decl."},
+{latin:"magnus",en:"great, large",cat:"Adjective",hint:"1st/2nd decl."},
+{latin:"malus",en:"bad, evil",cat:"Adjective",hint:"1st/2nd decl."},
+{latin:"parvus",en:"small",cat:"Adjective",hint:"1st/2nd decl."},
+{latin:"multus",en:"much, many",cat:"Adjective",hint:"1st/2nd decl."},
+{latin:"novus",en:"new",cat:"Adjective",hint:"1st/2nd decl."},
+{latin:"longus",en:"long",cat:"Adjective",hint:"1st/2nd decl."},
+{latin:"fortis",en:"brave, strong",cat:"Adjective",hint:"3rd decl."},
+{latin:"omnis",en:"all, every",cat:"Adjective",hint:"3rd decl."},
+{latin:"gravis",en:"heavy, serious",cat:"Adjective",hint:"3rd decl."},
+{latin:"ego",en:"I",cat:"Pronoun",hint:"1st person"},
+{latin:"tu",en:"you (sg.)",cat:"Pronoun",hint:"2nd person"},
+{latin:"nos",en:"we",cat:"Pronoun",hint:"1st person pl."},
+{latin:"vos",en:"you (pl.)",cat:"Pronoun",hint:"2nd person pl."},
+{latin:"is",en:"he, that",cat:"Pronoun",hint:"demonstrative"},
+{latin:"hic",en:"this",cat:"Pronoun",hint:"demonstrative"},
+{latin:"ille",en:"that",cat:"Pronoun",hint:"demonstrative"},
+{latin:"qui",en:"who, which",cat:"Pronoun",hint:"relative"},
+{latin:"se",en:"himself, herself, themselves",cat:"Pronoun",hint:"reflexive"},
+{latin:"quis",en:"who? (interrogative)",cat:"Pronoun",hint:"interrogative"},
+{latin:"in",en:"in, into (+ abl/acc)",cat:"Preposition",hint:""},
+{latin:"ad",en:"to, towards (+ acc)",cat:"Preposition",hint:""},
+{latin:"ex",en:"out of, from (+ abl)",cat:"Preposition",hint:""},
+{latin:"cum",en:"with (+ abl)",cat:"Preposition",hint:""},
+{latin:"per",en:"through (+ acc)",cat:"Preposition",hint:""},
+{latin:"ab",en:"from, by (+ abl)",cat:"Preposition",hint:""},
+{latin:"de",en:"down from, about (+ abl)",cat:"Preposition",hint:""},
+{latin:"pro",en:"in front of, for (+ abl)",cat:"Preposition",hint:""},
+{latin:"inter",en:"between, among (+ acc)",cat:"Preposition",hint:""},
+{latin:"post",en:"after, behind (+ acc)",cat:"Preposition",hint:""}
+];
+
+// Declension tables
+const DECL_DATA = {
+"1st Declension (puella, -ae, f.)":{cases:["Nom","Voc","Acc","Gen","Dat","Abl"],sg:["puella","puella","puellam","puellae","puellae","puella"],pl:["puellae","puellae","puellas","puellarum","puellis","puellis"]},
+"2nd Declension (servus, -i, m.)":{cases:["Nom","Voc","Acc","Gen","Dat","Abl"],sg:["servus","serve","servum","servi","servo","servo"],pl:["servi","servi","servos","servorum","servis","servis"]},
+"2nd Declension (bellum, -i, n.)":{cases:["Nom","Voc","Acc","Gen","Dat","Abl"],sg:["bellum","bellum","bellum","belli","bello","bello"],pl:["bella","bella","bella","bellorum","bellis","bellis"]},
+"3rd Declension (rex, regis, m.)":{cases:["Nom","Voc","Acc","Gen","Dat","Abl"],sg:["rex","rex","regem","regis","regi","rege"],pl:["reges","reges","reges","regum","regibus","regibus"]},
+"3rd Declension (nomen, nominis, n.)":{cases:["Nom","Voc","Acc","Gen","Dat","Abl"],sg:["nomen","nomen","nomen","nominis","nomini","nomine"],pl:["nomina","nomina","nomina","nominum","nominibus","nominibus"]},
+"4th Declension (manus, -us, f.)":{cases:["Nom","Voc","Acc","Gen","Dat","Abl"],sg:["manus","manus","manum","manus","manui","manu"],pl:["manus","manus","manus","manuum","manibus","manibus"]},
+"5th Declension (dies, -ei, m./f.)":{cases:["Nom","Voc","Acc","Gen","Dat","Abl"],sg:["dies","dies","diem","diei","diei","die"],pl:["dies","dies","dies","dierum","diebus","diebus"]}
+};
+
+const ADJ_DATA = {
+"1st/2nd Declension (bonus, -a, -um)":{cases:["Nom","Acc","Gen","Dat","Abl"],m:["bonus","bonum","boni","bono","bono"],f:["bona","bonam","bonae","bonae","bona"],n:["bonum","bonum","boni","bono","bono"],mpl:["boni","bonos","bonorum","bonis","bonis"],fpl:["bonae","bonas","bonarum","bonis","bonis"],npl:["bona","bona","bonorum","bonis","bonis"]},
+"3rd Declension (fortis, -e)":{cases:["Nom","Acc","Gen","Dat","Abl"],m:["fortis","fortem","fortis","forti","forti"],f:["fortis","fortem","fortis","forti","forti"],n:["forte","forte","fortis","forti","forti"],mpl:["fortes","fortes","fortium","fortibus","fortibus"],fpl:["fortes","fortes","fortium","fortibus","fortibus"],npl:["fortia","fortia","fortium","fortibus","fortibus"]}
+};
+
+const IRREG_VERBS = {
+"sum, esse (to be) - Present":{persons:["1st sg","2nd sg","3rd sg","1st pl","2nd pl","3rd pl"],forms:["sum","es","est","sumus","estis","sunt"]},
+"sum, esse - Imperfect":{persons:["1st sg","2nd sg","3rd sg","1st pl","2nd pl","3rd pl"],forms:["eram","eras","erat","eramus","eratis","erant"]},
+"sum, esse - Future":{persons:["1st sg","2nd sg","3rd sg","1st pl","2nd pl","3rd pl"],forms:["ero","eris","erit","erimus","eritis","erunt"]},
+"possum, posse (to be able) - Present":{persons:["1st sg","2nd sg","3rd sg","1st pl","2nd pl","3rd pl"],forms:["possum","potes","potest","possumus","potestis","possunt"]},
+"eo, ire (to go) - Present":{persons:["1st sg","2nd sg","3rd sg","1st pl","2nd pl","3rd pl"],forms:["eo","is","it","imus","itis","eunt"]},
+"fero, ferre (to carry) - Present":{persons:["1st sg","2nd sg","3rd sg","1st pl","2nd pl","3rd pl"],forms:["fero","fers","fert","ferimus","fertis","ferunt"]},
+"volo, velle (to wish) - Present":{persons:["1st sg","2nd sg","3rd sg","1st pl","2nd pl","3rd pl"],forms:["volo","vis","vult","volumus","vultis","volunt"]}
+};
+
+// Practice nouns for declension practice
+const PRACTICE_NOUNS = [
+{nom:"puella",gen:"puellae",gender:"f",decl:1,forms:{nom_sg:"puella",voc_sg:"puella",acc_sg:"puellam",gen_sg:"puellae",dat_sg:"puellae",abl_sg:"puella",nom_pl:"puellae",voc_pl:"puellae",acc_pl:"puellas",gen_pl:"puellarum",dat_pl:"puellis",abl_pl:"puellis"}},
+{nom:"servus",gen:"servi",gender:"m",decl:2,forms:{nom_sg:"servus",voc_sg:"serve",acc_sg:"servum",gen_sg:"servi",dat_sg:"servo",abl_sg:"servo",nom_pl:"servi",voc_pl:"servi",acc_pl:"servos",gen_pl:"servorum",dat_pl:"servis",abl_pl:"servis"}},
+{nom:"bellum",gen:"belli",gender:"n",decl:2,forms:{nom_sg:"bellum",voc_sg:"bellum",acc_sg:"bellum",gen_sg:"belli",dat_sg:"bello",abl_sg:"bello",nom_pl:"bella",voc_pl:"bella",acc_pl:"bella",gen_pl:"bellorum",dat_pl:"bellis",abl_pl:"bellis"}},
+{nom:"rex",gen:"regis",gender:"m",decl:3,forms:{nom_sg:"rex",voc_sg:"rex",acc_sg:"regem",gen_sg:"regis",dat_sg:"regi",abl_sg:"rege",nom_pl:"reges",voc_pl:"reges",acc_pl:"reges",gen_pl:"regum",dat_pl:"regibus",abl_pl:"regibus"}},
+{nom:"manus",gen:"manus",gender:"f",decl:4,forms:{nom_sg:"manus",voc_sg:"manus",acc_sg:"manum",gen_sg:"manus",dat_sg:"manui",abl_sg:"manu",nom_pl:"manus",voc_pl:"manus",acc_pl:"manus",gen_pl:"manuum",dat_pl:"manibus",abl_pl:"manibus"}},
+{nom:"dies",gen:"diei",gender:"m",decl:5,forms:{nom_sg:"dies",voc_sg:"dies",acc_sg:"diem",gen_sg:"diei",dat_sg:"diei",abl_sg:"die",nom_pl:"dies",voc_pl:"dies",acc_pl:"dies",gen_pl:"dierum",dat_pl:"diebus",abl_pl:"diebus"}}
+];
+
+const CONJUGATION_DATA = [
+{verb:"amo",meaning:"I love",conj:1,present:["amo","amas","amat","amamus","amatis","amant"],imperfect:["amabam","amabas","amabat","amabamus","amabatis","amabant"],perfect:["amavi","amavisti","amavit","amavimus","amavistis","amaverunt"]},
+{verb:"moneo",meaning:"I warn",conj:2,present:["moneo","mones","monet","monemus","monetis","monent"],imperfect:["monebam","monebas","monebat","monebamus","monebatis","monebant"],perfect:["monui","monuisti","monuit","monuimus","monuistis","monuerunt"]},
+{verb:"rego",meaning:"I rule",conj:3,present:["rego","regis","regit","regimus","regitis","regunt"],imperfect:["regebam","regebas","regebat","regebamus","regebatis","regebant"],perfect:["rexi","rexisti","rexit","reximus","rexistis","rexerunt"]},
+{verb:"audio",meaning:"I hear",conj:4,present:["audio","audis","audit","audimus","auditis","audiunt"],imperfect:["audiebam","audiebas","audiebat","audiebamus","audiebatis","audiebant"],perfect:["audivi","audivisti","audivit","audivimus","audivistis","audiverunt"]}
+];
+
+const PERSON_LABELS = ["1st sg","2nd sg","3rd sg","1st pl","2nd pl","3rd pl"];
+const TENSE_LABELS = ["present","imperfect","perfect"];
+const CASE_LABELS = ["nom","voc","acc","gen","dat","abl"];
+const NUM_LABELS = ["sg","pl"];
+
+// ===================== STATE =====================
+let currentUser = null;
+let litCurrentSet = [];
+let litCurrentIdx = 0;
+let litFlipped = false;
+let vocabIdx = 0;
+let vocabCat = "All";
+let currentTest = null;
+let testQuestions = [];
+let testIdx = 0;
+let testScore = 0;
+let testMistakes = [];
+let practiceAnswer = "";
+
+// ===================== AUTH & GITHUB GIST =====================
+const GH_GIST_DESC = 'LatinCoach-Data';
+const GH_GIST_FILE = 'data.json';
+let currentToken = null;
+let gistId = null;
+let userData = {scores:[],mistakes:[],favs:[],streak:0};
+
+async function ghFetch(method, path, body){
+const r = await fetch('https://api.github.com'+path,{
+method,
+headers:{'Authorization':'token '+currentToken,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+body:body?JSON.stringify(body):undefined
+});
+if(!r.ok) throw new Error(r.status);
+return r.json();
+}
+
+async function doLogin(){
+const token = document.getElementById('loginToken').value.trim();
+const err = document.getElementById('loginError');
+const btn = document.getElementById('loginBtn');
+if(!token){err.textContent='Please paste your GitHub token.';err.style.display='block';return;}
+btn.textContent='Connecting...';btn.disabled=true;err.style.display='none';
+try{
+const user = await ghFetch('GET','/user');
+currentUser = user.login;
+currentToken = token;
+const gists = await ghFetch('GET','/gists');
+const existing = gists.find(g=>g.description===GH_GIST_DESC);
+if(existing){
+gistId = existing.id;
+const gist = await ghFetch('GET','/gists/'+gistId);
+const content = gist.files[GH_GIST_FILE]&&gist.files[GH_GIST_FILE].content;
+userData = content?JSON.parse(content):{scores:[],mistakes:[],favs:[],streak:0};
+}else{
+userData = {scores:[],mistakes:[],favs:[],streak:0};
+const created = await ghFetch('POST','/gists',{description:GH_GIST_DESC,public:false,files:{[GH_GIST_FILE]:{content:JSON.stringify(userData)}}});
+gistId = created.id;
+}
+localStorage.setItem('latincoach.token',token);
+enterApp();
+}catch(e){
+err.textContent='Could not connect. Check your token has the "gist" scope and try again.';
+err.style.display='block';
+currentToken=null;currentUser=null;
+}finally{
+btn.textContent='Login with GitHub';btn.disabled=false;
+}
+}
+
+function doLogout(){
+currentUser=null;currentToken=null;gistId=null;
+userData={scores:[],mistakes:[],favs:[],streak:0};
+localStorage.removeItem('latincoach.token');
+document.getElementById('navbar').style.display='none';
+document.getElementById('helpFab').style.display='none';
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById('sec-login').classList.add('active');
+document.getElementById('loginToken').value='';
+}
+
+function enterApp(){
+document.getElementById('navbar').style.display='block';
+document.getElementById('helpFab').style.display='flex';
+showSection('home');
+updateHomeStats();
+}
+
+async function pushData(){
+if(!gistId||!currentToken)return;
+try{
+await ghFetch('PATCH','/gists/'+gistId,{files:{[GH_GIST_FILE]:{content:JSON.stringify(userData)}}});
+}catch(e){console.warn('GitHub save failed:',e);}
+}
+
+// ===================== USER DATA =====================
+function getFavs(){return userData.favs||[];}
+function setFavs(f){userData.favs=f;pushData();}
+function getScores(){return userData.scores||[];}
+function addScore(type,score,total,mistakes){
+userData.scores=userData.scores||[];
+userData.scores.unshift({date:new Date().toLocaleDateString(),type,score,total,mistakes});
+if(userData.scores.length>50)userData.scores.length=50;
+pushData();
+}
+function getMistakes(){return userData.mistakes||[];}
+function addMistakes(arr){
+userData.mistakes=userData.mistakes||[];
+userData.mistakes=arr.concat(userData.mistakes);
+if(userData.mistakes.length>100)userData.mistakes.length=100;
+pushData();
+}
+function getBestScore(){
+const scores=getScores();
+if(!scores.length)return 0;
+return Math.max(...scores.map(s=>Math.round(s.score/s.total*100)));
+}
+
+// ===================== NAVIGATION =====================
+function showSection(id){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+const sec=document.getElementById('sec-'+id);
+if(sec)sec.classList.add('active');
+document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active-link'));
+const links=document.querySelectorAll('.nav-link');
+links.forEach(l=>{if(l.textContent.trim().toLowerCase().replace(/\s/g,'').includes(id))l.classList.add('active-link');});
+document.getElementById('navLinks').classList.remove('open');
+if(id==='home')updateHomeStats();
+if(id==='progress')updateProgress();
+if(id==='grammar')buildGrammarTables();
+if(id==='vocab'){resetVocabTrainer();renderVocabList();}
+if(id==='literature'){
+document.getElementById('tacitusCount').textContent=TACITUS_DATA.length+' cards';
+document.getElementById('plinyCount').textContent=PLINY_DATA.length+' cards';
+document.getElementById('virgilCount').textContent=VIRGIL_DATA.length+' cards';
+}
+if(id==='tests'){
+document.getElementById('testMenu').style.display='grid';
+document.getElementById('testArea').style.display='none';
+document.getElementById('testResults').style.display='none';
+}
+window.scrollTo(0,0);
+}
+
+function toggleMobileMenu(){document.getElementById('navLinks').classList.toggle('open');}
+
+// ===================== DARK MODE =====================
+function toggleDark(){
+document.documentElement.classList.toggle('dark');
+localStorage.setItem('latincoach.dark',document.documentElement.classList.contains('dark'));
+}
+function initDark(){
+if(localStorage.getItem('latincoach.dark')==='true')document.documentElement.classList.add('dark');
+}
+
+// ===================== HOME =====================
+function updateHomeStats(){
+if(!currentUser)return;
+document.getElementById('homeStreak').textContent=userData.streak||0;
+document.getElementById('homeBest').textContent=getBestScore();
+}
+
+// ===================== LITERATURE FLASHCARDS =====================
+function openLitModal(set){
+if(set==='tacitus')litCurrentSet=TACITUS_DATA;
+else if(set==='pliny')litCurrentSet=PLINY_DATA;
+else if(set==='virgil')litCurrentSet=VIRGIL_DATA;
+else return;
+litCurrentIdx=0;litFlipped=false;
+const titles={tacitus:'Tacitus -- Messalina',pliny:'Pliny -- Avunculus Meus',virgil:'Virgil -- Aeneid Book I'};
+document.getElementById('litModalTitle').textContent=titles[set];
+renderLitCard();
+renderLitList();
+document.getElementById('litModal').classList.add('show');
+}
+function closeLitModal(){document.getElementById('litModal').classList.remove('show');}
+
+function renderLitCard(){
+const c=litCurrentSet[litCurrentIdx];
+document.getElementById('litFront').innerHTML='<span style="font-style:italic">'+escHtml(c.la)+'</span>';
+document.getElementById('litBack').textContent=c.en;
+document.getElementById('litCardNum').textContent='Card '+(litCurrentIdx+1)+' of '+litCurrentSet.length;
+document.getElementById('litFlashcard').classList.remove('flipped');
+litFlipped=false;
+}
+
+function flipLitCard(){
+document.getElementById('litFlashcard').classList.toggle('flipped');
+litFlipped=!litFlipped;
+}
+function litNext(){litCurrentIdx=(litCurrentIdx+1)%litCurrentSet.length;renderLitCard();}
+function litPrev(){litCurrentIdx=(litCurrentIdx-1+litCurrentSet.length)%litCurrentSet.length;renderLitCard();}
+
+function renderLitList(){
+const el=document.getElementById('litListView');
+el.innerHTML=litCurrentSet.map((c,i)=>'<div class="bg-card2 rounded p-3 text-sm" style="border:1px solid var(--border)"><span style="color:var(--gold);font-weight:600">'+(i+1)+'.</span> <em>'+escHtml(c.la)+'</em><br><span class="text-roman2">'+escHtml(c.en)+'</span></div>').join('');
+}
+
+function copyForQuizlet(){
+const txt=litCurrentSet.map(c=>c.la+'\t'+c.en).join('\n');
+navigator.clipboard.writeText(txt).then(()=>alert('Copied '+litCurrentSet.length+' cards to clipboard in Quizlet format (Latin[TAB]English).'));
+}
+
+// ===================== GRAMMAR =====================
+let grammarBuilt=false;
+function buildGrammarTables(){
+if(grammarBuilt)return;grammarBuilt=true;
+// Declensions
+let html='';
+for(const[title,d] of Object.entries(DECL_DATA)){
+html+='<div class="bg-card rounded-xl p-4 shadow" style="border:1px solid var(--border);overflow-x:auto"><h4 class="font-bold text-gold mb-2">'+title+'</h4><table><thead><tr><th>Case</th><th>Singular</th><th>Plural</th></tr></thead><tbody>';
+d.cases.forEach((c,i)=>{html+='<tr><td class="font-semibold">'+c+'</td><td>'+d.sg[i]+'</td><td>'+d.pl[i]+'</td></tr>';});
+html+='</tbody></table></div>';
+}
+document.getElementById('declTables').innerHTML=html;
+
+// Adjectives
+html='';
+for(const[title,a] of Object.entries(ADJ_DATA)){
+html+='<div class="bg-card rounded-xl p-4 shadow" style="border:1px solid var(--border);overflow-x:auto"><h4 class="font-bold text-gold mb-2">'+title+'</h4>';
+html+='<h5 class="text-sm font-semibold mt-2 mb-1">Singular</h5><table><thead><tr><th>Case</th><th>Masc</th><th>Fem</th><th>Neut</th></tr></thead><tbody>';
+a.cases.forEach((c,i)=>{html+='<tr><td class="font-semibold">'+c+'</td><td>'+a.m[i]+'</td><td>'+a.f[i]+'</td><td>'+a.n[i]+'</td></tr>';});
+html+='</tbody></table>';
+html+='<h5 class="text-sm font-semibold mt-2 mb-1">Plural</h5><table><thead><tr><th>Case</th><th>Masc</th><th>Fem</th><th>Neut</th></tr></thead><tbody>';
+a.cases.forEach((c,i)=>{html+='<tr><td class="font-semibold">'+c+'</td><td>'+a.mpl[i]+'</td><td>'+a.fpl[i]+'</td><td>'+a.npl[i]+'</td></tr>';});
+html+='</tbody></table></div>';
+}
+document.getElementById('adjTables').innerHTML=html;
+
+// Verbs
+html='';
+for(const[title,v] of Object.entries(IRREG_VERBS)){
+html+='<div class="bg-card rounded-xl p-4 shadow" style="border:1px solid var(--border);overflow-x:auto"><h4 class="font-bold text-gold mb-2">'+title+'</h4><table><thead><tr><th>Person</th><th>Form</th></tr></thead><tbody>';
+v.persons.forEach((p,i)=>{html+='<tr><td class="font-semibold">'+p+'</td><td>'+v.forms[i]+'</td></tr>';});
+html+='</tbody></table></div>';
+}
+document.getElementById('verbTables').innerHTML=html;
+
+newPractice();
+}
+
+function showGrammarTab(tab,btn){
+document.querySelectorAll('.grammar-tab').forEach(t=>t.style.display='none');
+document.getElementById('grammar'+tab.charAt(0).toUpperCase()+tab.slice(1)).style.display='block';
+btn.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active-tab'));
+btn.classList.add('active-tab');
+if(tab==='practice')newPractice();
+}
+
+function newPractice(){
+const noun=PRACTICE_NOUNS[Math.floor(Math.random()*PRACTICE_NOUNS.length)];
+const c=CASE_LABELS[Math.floor(Math.random()*CASE_LABELS.length)];
+const n=NUM_LABELS[Math.floor(Math.random()*NUM_LABELS.length)];
+const key=c+'_'+n;
+practiceAnswer=noun.forms[key];
+document.getElementById('practiceNoun').textContent=noun.nom+', '+noun.gen+' ('+noun.gender+', '+noun.decl+'th decl.)';
+document.getElementById('practicePrompt').textContent='Give the '+c.toUpperCase()+' '+n.toUpperCase()+' form:';
+document.getElementById('practiceInput').value='';
+document.getElementById('practiceFeedback').textContent='';
+document.getElementById('practiceInput').focus();
+}
+
+function checkPractice(){
+const inp=document.getElementById('practiceInput').value.trim().toLowerCase();
+const fb=document.getElementById('practiceFeedback');
+if(!inp){fb.textContent='Type an answer first.';fb.style.color='var(--red)';return;}
+if(normalize(inp)===normalize(practiceAnswer)){
+fb.textContent='Correct!';fb.style.color='#2a7d2a';
+}else{
+fb.textContent='Incorrect. The answer is: '+practiceAnswer;fb.style.color='var(--red)';
+}
+}
+
+// ===================== VOCABULARY =====================
+function getFilteredVocab(){
+if(vocabCat==='All')return VOCAB_DATA;
+return VOCAB_DATA.filter(v=>v.cat===vocabCat);
+}
+
+function resetVocabTrainer(){
+vocabIdx=0;
+renderVocabCard();
+}
+
+function renderVocabCard(){
+const list=getFilteredVocab();
+if(!list.length)return;
+if(vocabIdx>=list.length)vocabIdx=0;
+if(vocabIdx<0)vocabIdx=list.length-1;
+const v=list[vocabIdx];
+document.getElementById('vocabProgress').textContent=(vocabIdx+1)+' / '+list.length;
+document.getElementById('vocabMeta').textContent=v.cat+(v.hint?' -- '+v.hint:'');
+document.getElementById('vocabEnglish').textContent=v.en;
+document.getElementById('vocabHint').textContent='Type the Latin headword below:';
+document.getElementById('vocabInput').value='';
+document.getElementById('vocabFeedback').textContent='';
+document.getElementById('vocabInput').focus();
+}
+
+function checkVocab(){
+const list=getFilteredVocab();
+const v=list[vocabIdx];
+const inp=document.getElementById('vocabInput').value.trim().toLowerCase();
+const fb=document.getElementById('vocabFeedback');
+if(!inp){fb.textContent='Type an answer first.';fb.style.color='var(--red)';return;}
+if(normalize(inp)===normalize(v.latin)){
+fb.textContent='Correct!';fb.style.color='#2a7d2a';
+}else{
+fb.textContent='Incorrect. The answer is: '+v.latin;fb.style.color='var(--red)';
+}
+}
+
+function revealVocab(){
+const list=getFilteredVocab();
+const v=list[vocabIdx];
+document.getElementById('vocabFeedback').textContent='Answer: '+v.latin;
+document.getElementById('vocabFeedback').style.color='var(--gold)';
+}
+
+function vocabNext(){vocabIdx++;renderVocabCard();}
+function vocabPrev(){vocabIdx--;renderVocabCard();}
+
+function showVocabTab(tab,btn){
+document.getElementById('vocabTrainer').style.display=tab==='trainer'?'block':'none';
+document.getElementById('vocabList').style.display=tab==='list'?'block':'none';
+btn.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active-tab'));
+btn.classList.add('active-tab');
+if(tab==='list')renderVocabList();
+}
+
+function renderVocabList(){
+const search=document.getElementById('vocabSearch').value.toLowerCase();
+const favs=getFavs();
+let list=getFilteredVocab();
+if(search)list=list.filter(v=>v.latin.toLowerCase().includes(search)||v.en.toLowerCase().includes(search));
+const el=document.getElementById('vocabListContent');
+el.innerHTML=list.map(v=>{
+const isFav=favs.includes(v.latin);
+return '<div class="flex items-center gap-3 bg-card rounded p-2" style="border:1px solid var(--border)">'+
+'<span class="star-btn" onclick="toggleFav(\''+v.latin+'\')" style="color:'+(isFav?'var(--gold)':'var(--border)')+'">&#9733;</span>'+
+'<span class="font-semibold" style="min-width:80px">'+escHtml(v.latin)+'</span>'+
+'<span class="text-roman2 text-sm flex-1">'+escHtml(v.en)+'</span>'+
+'<span class="text-sm" style="color:var(--gold)">'+v.cat+'</span></div>';
+}).join('');
+}
+
+function filterVocab(){renderVocabList();}
+function filterVocabCat(cat,btn){
+vocabCat=cat;
+btn.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active-tab'));
+btn.classList.add('active-tab');
+renderVocabList();
+resetVocabTrainer();
+}
+
+function toggleFav(latin){
+let favs=getFavs();
+if(favs.includes(latin))favs=favs.filter(f=>f!==latin);
+else favs.push(latin);
+setFavs(favs);
+renderVocabList();
+}
+
+// ===================== TESTS =====================
+function startTest(type){
+currentTest=type;
+testQuestions=[];testIdx=0;testScore=0;testMistakes=[];
+if(type==='declension'){
+for(let i=0;i<10;i++){
+const noun=PRACTICE_NOUNS[Math.floor(Math.random()*PRACTICE_NOUNS.length)];
+const c=CASE_LABELS[Math.floor(Math.random()*CASE_LABELS.length)];
+const n=NUM_LABELS[Math.floor(Math.random()*NUM_LABELS.length)];
+testQuestions.push({q:'Give the '+c.toUpperCase()+' '+n.toUpperCase()+' of '+noun.nom+' ('+noun.gen+', '+noun.decl+'th decl.)',a:noun.forms[c+'_'+n]});
+}
+}else if(type==='conjugation'){
+for(let i=0;i<10;i++){
+const v=CONJUGATION_DATA[Math.floor(Math.random()*CONJUGATION_DATA.length)];
+const t=TENSE_LABELS[Math.floor(Math.random()*TENSE_LABELS.length)];
+const p=Math.floor(Math.random()*6);
+testQuestions.push({q:'Give the '+PERSON_LABELS[p]+' '+t+' of '+v.verb+' ('+v.meaning+')',a:v[t][p]});
+}
+}
+document.getElementById('testMenu').style.display='none';
+document.getElementById('testResults').style.display='none';
+document.getElementById('testArea').style.display='block';
+document.getElementById('testTitle').textContent=type==='declension'?'Declension Test':'Conjugation Test';
+renderTestQ();
+}
+
+function renderTestQ(){
+if(testIdx>=testQuestions.length){finishTest();return;}
+document.getElementById('testProgress').textContent=(testIdx+1)+'/'+testQuestions.length;
+document.getElementById('testQuestion').textContent=testQuestions[testIdx].q;
+document.getElementById('testInput').value='';
+document.getElementById('testFeedback').textContent='';
+document.getElementById('testInput').focus();
+}
+
+function submitTestAnswer(){
+const inp=document.getElementById('testInput').value.trim().toLowerCase();
+const fb=document.getElementById('testFeedback');
+if(!inp){fb.textContent='Type an answer.';fb.style.color='var(--red)';return;}
+const q=testQuestions[testIdx];
+if(normalize(inp)===normalize(q.a)){
+testScore++;
+fb.textContent='Correct!';fb.style.color='#2a7d2a';
+}else{
+fb.textContent='Incorrect. Answer: '+q.a;fb.style.color='var(--red)';
+testMistakes.push({q:q.q,yourAnswer:inp,correct:q.a});
+}
+setTimeout(()=>{testIdx++;renderTestQ();},1200);
+}
+
+function skipTestQ(){
+const q=testQuestions[testIdx];
+testMistakes.push({q:q.q,yourAnswer:'(skipped)',correct:q.a});
+testIdx++;renderTestQ();
+}
+
+function finishTest(){
+document.getElementById('testArea').style.display='none';
+document.getElementById('testResults').style.display='block';
+const pct=Math.round(testScore/testQuestions.length*100);
+document.getElementById('testScoreTitle').textContent=pct+'%';
+document.getElementById('testScoreBar').style.width=pct+'%';
+document.getElementById('testScoreText').textContent=testScore+' / '+testQuestions.length+' correct';
+const mEl=document.getElementById('testMistakes');
+if(testMistakes.length){
+mEl.innerHTML='<h4 class="font-bold text-red mb-2">Mistakes:</h4>'+testMistakes.map(m=>
+'<div class="bg-card2 rounded p-2 text-sm" style="border:1px solid var(--border)"><strong>'+escHtml(m.q)+'</strong><br>Your answer: <span class="text-red">'+escHtml(m.yourAnswer)+'</span> | Correct: <span style="color:#2a7d2a">'+escHtml(m.correct)+'</span></div>'
+).join('');
+}else{mEl.innerHTML='<p style="color:#2a7d2a">No mistakes!</p>';}
+addScore(currentTest,testScore,testQuestions.length,testMistakes);
+addMistakes(testMistakes);
+if(pct>=90)fireConfetti();
+}
+
+// ===================== PROGRESS =====================
+function updateProgress(){
+if(!currentUser)return;
+document.getElementById('progBest').textContent=getBestScore()+'%';
+const scores=getScores();
+document.getElementById('progTests').textContent=scores.length;
+document.getElementById('progFavs').textContent=getFavs().length;
+const tbody=document.getElementById('progScoresBody');
+tbody.innerHTML=scores.slice(0,20).map(s=>
+'<tr><td>'+s.date+'</td><td>'+s.type+'</td><td>'+Math.round(s.score/s.total*100)+'%</td></tr>'
+).join('');
+if(!scores.length)tbody.innerHTML='<tr><td colspan="3" class="text-roman2">No tests taken yet.</td></tr>';
+const mEl=document.getElementById('progMistakes');
+const mistakes=getMistakes();
+if(mistakes.length){
+mEl.innerHTML=mistakes.slice(0,20).map(m=>
+'<div class="bg-card rounded p-2 text-sm" style="border:1px solid var(--border)"><strong>'+escHtml(m.q)+'</strong><br>Your answer: <span class="text-red">'+escHtml(m.yourAnswer)+'</span> | Correct: <span style="color:#2a7d2a">'+escHtml(m.correct)+'</span></div>'
+).join('');
+}else{mEl.innerHTML='<p class="text-roman2">No mistakes recorded yet.</p>';}
+}
+
+// ===================== HELP =====================
+function toggleHelp(){
+document.getElementById('helpModal').classList.toggle('show');
+}
+
+// ===================== CONFETTI =====================
+function fireConfetti(){
+const colors=['#c9a84c','#8b1a1a','#e8d5a3','#fff','#a88832'];
+for(let i=0;i<60;i++){
+const el=document.createElement('div');
+el.className='confetti-piece';
+el.style.left=Math.random()*100+'vw';
+el.style.top=-10+'px';
+el.style.background=colors[Math.floor(Math.random()*colors.length)];
+el.style.animationDelay=Math.random()*2+'s';
+el.style.borderRadius=Math.random()>.5?'50%':'0';
+el.style.transform='rotate('+Math.random()*360+'deg)';
+document.body.appendChild(el);
+setTimeout(()=>el.remove(),5000);
+}
+}
+
+// ===================== UTILS =====================
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function normalize(s){return s.toLowerCase().replace(/[āáàâ]/g,'a').replace(/[ēéèê]/g,'e').replace(/[īíìî]/g,'i').replace(/[ōóòô]/g,'o').replace(/[ūúùû]/g,'u').trim();}
+
+// ===================== INIT =====================
+initDark();
+(function checkSession(){
+const saved=localStorage.getItem('latincoach.token');
+if(saved){
+document.getElementById('loginToken').value=saved;
+doLogin();
+}
+})();
+</script>
+</body>
+</html>
